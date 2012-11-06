@@ -57,6 +57,11 @@ define(['buster', 'foliage', 'jquery', 'underscore'],
 	       "sublists of text elements are added as individual elements" : elemTest(function(e) {
 		   f.p(["text1", ["text2", "text3"]])(e);
 		   assert.equals(e.find('p').text().trim(),"text1\ntext2\ntext3");
+	       }),
+	       "attributes can be created and then added" : elemTest(function(e) {
+		   var attr = f.create({someAttr: "the value"});
+		   f.p(attr)(e);
+		   assert.equals(e.find('p').attr('someAttr'), "the value");
 	       })
            });
        });
