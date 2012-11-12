@@ -45,6 +45,15 @@ define(['buster', 'foliage', 'jquery', 'foliage-event'],
 		   assert.equals(e.attr('class'), 'enabled')
 		   addEnabled.undo();
 		   refute.equals(e.attr('class'), 'enabled')
+	       }),
+	       "all can be undone" : elemTest(function(e) {
+		   var addEnabledAndActive = f.all(
+		       f.addClass("enabled"),
+		       f.addClass("active"))(e);
+		   assert.equals(e.attr('class'), 'enabled active');
+		   addEnabledAndActive.undo();
+		   assert.equals($(e).attr('class'), '');
+		   
 	       })
 	   })
 })
