@@ -62,6 +62,18 @@ define(['buster', 'foliage', 'jquery', 'underscore'],
 		   var attr = f.create({someAttr: "the value"});
 		   f.p(attr)(e);
 		   assert.equals(e.find('p').attr('someAttr'), "the value");
+	       }),
+	       "a child to all that returns undefined throws an error" : elemTest(function(e) {
+		   var elem = f.all(function(){});
+		   assert.exception(function() {
+		       elem(e);
+		   });
+	       }),
+	       "a child to all that returns an object without an undo throws an error" : elemTest(function(e) {
+		   var elem = f.all(function(){return {}});
+		   assert.exception(function() {
+		       elem(e);
+		   });
 	       })
            });
        });
