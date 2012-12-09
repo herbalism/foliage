@@ -2,9 +2,12 @@ var config = module.exports;
 
 config["browser tests"] = {
     environment: "browser",
-    sources: ["lib/**/*.js"],
+    sources: ["foliage*.js",
+	      "modules/lodash/lodash.js"],
     tests: ["test/*.js"],
-    libs: ["lib/curl-0.6/curl.js", "loaderconf.js"],
+    libs: ["modules/curl/src/curl.js", 
+	   "loaderconf.js", 
+	   "ext/*.js"],
     extensions: [require("buster-amd")]
 };
 

@@ -1,4 +1,4 @@
-define(['jquery', 'underscore'], function($, _) {
+define(['jquery', 'lodash'], function($, _) {
     var result = function(event, handler) {
 	return function(element) {
 	    return $(element).bind(event, handler);

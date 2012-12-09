@@ -1,4 +1,4 @@
-define(['buster', 'foliage', 'jquery', 'underscore'],
+define(['buster', 'foliage', 'jquery', 'lodash'],
        function(buster, f, $, _) {
 
 	   var assert = buster.assert;

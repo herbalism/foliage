@@ -1,4 +1,4 @@
-define(['jquery', 'underscore'], function($, _) {
+define(['jquery', 'lodash'], function($, _) {
     var create = function(val) {
 	return function(elem) {
 	    switch(typeof val){
@@ -92,7 +92,7 @@ define(['jquery', 'underscore'], function($, _) {
 	var children = arguments;
 	return function(element) {
 	    var done = _.map(children, function(child){
-		var undo = child(element);
+		var undo = create(child)(element);
 		if (undo && undo.undo) {
 		    return undo;
 		}
@@ -110,7 +110,9 @@ define(['jquery', 'underscore'], function($, _) {
 
     function into(elem, child) {
 	return function(element) {
-	    return child($(elem, element));
+	    var res = child($(elem, element))
+	    console.log(res);
+	    return res;
 	}
     }
 
