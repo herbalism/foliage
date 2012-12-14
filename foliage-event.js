@@ -19,7 +19,9 @@ define(['jquery', 'lodash'], function($, _) {
     'mouseover',
     'mouseup',
     'change',
-    'input'
+    'input',
+    'keyup',
+    'keypress'
     ], function(acc, current) {
 	acc[current] = function(handler) {return result(current, handler)};
 	return acc;
