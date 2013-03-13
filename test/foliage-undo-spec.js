@@ -36,9 +36,9 @@ define(['buster', 'foliage', 'jquery', 'foliage-event'],
 	       }),
 	       "subelement can be created with create" : elemTest(function(e){
 		   var subelem = f.create(f.p("subparagraph"))(e);
-		   assert.equals("subparagraph", $(e, 'p').text().trim());
+		   assert.equals( $(e, 'p').text().trim(), "subparagraph",  "before undo");
 		   subelem.undo();
-		   assert.equals($(e, 'p').text().trim(), "");
+		   assert.equals("", $(e, 'p').text().trim(),  "after undo");
 	       }),
 	       "added classes can be undone" : elemTest(function(e) {
 		   var addEnabled = f.addClass("enabled")(e);

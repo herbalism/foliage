@@ -41,7 +41,11 @@ define(['jquery', 'lodash'], function($, _) {
 
 	var handleArg = function (arg) {
 	    switch(typeof arg) {
-	    case "string": children.push(textNode(arg)); break;
+	    case "string": 
+                switch (arg.charAt(0)) {
+                case "#": handleObject({'id': arg.substr(1)}); break;
+                default: children.push(textNode(arg)); break;
+                };break;
 	    case "object": handleObject(arg); break;
 	    case "undefined" : break;
 		

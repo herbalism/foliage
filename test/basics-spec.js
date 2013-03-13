@@ -22,6 +22,10 @@ define(['buster', 'foliage', 'jquery', 'lodash'],
 		   f.a({href: 'http://google.com'})(e);
 		   assert.equals(e.find('a').attr('href'), "http://google.com");
 	       }),
+               "text with leading # is a shorthand for {id:...}" : elemTest(function(e) {
+		   f.p("#this-is-an-id", "this is a text")(e);
+		   assert.equals(e.find("#this-is-an-id").text().trim(), "this is a text");
+	       }),
 	       "elements can have subelements" : elemTest(function(e) {
 		   f.p(f.strong("strong text"))(e);
 		   assert.equals(e.find('p strong').text().trim(), "strong text");
