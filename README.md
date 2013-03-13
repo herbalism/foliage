@@ -64,7 +64,7 @@ Becomes attributes on the element.
 is equivalent to 
 
 ```
-"{id: 'some-id'}"
+{id: 'some-id'}
 ```
 
 This is convenient since the `id` attribute is so common.
