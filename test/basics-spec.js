@@ -26,6 +26,10 @@ define(['buster', 'foliage', 'jquery', 'lodash'],
 		   f.p("#this-is-an-id", "this is a text")(e);
 		   assert.equals(e.find("#this-is-an-id").text().trim(), "this is a text");
 	       }),
+               "text with leading . is a shorthand for addClass" : elemTest(function(e) {
+		   f.p(".this-is-a-class", "this is a text")(e);
+		   assert.equals(e.find(".this-is-a-class").text().trim(), "this is a text");
+	       }),
 	       "elements can have subelements" : elemTest(function(e) {
 		   f.p(f.strong("strong text"))(e);
 		   assert.equals(e.find('p strong').text().trim(), "strong text");

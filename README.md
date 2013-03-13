@@ -53,14 +53,29 @@ Becomes attributes on the element
 ```javascript
 "#some-id"
 ```
+
 is equivalent to 
+
 ```
 "{id: 'some-id'}"
 ```
+
 This is convenient since the `id` attribute is so common.
 
 ```javascript
-l.span("text")
+".some-class"
+```
+
+is equivalent to
+
+```
+f.addClass("some-class")
+```
+to make it easier to add one or more classes to an element.
+
+
+```javascript
+f.span("text")
 ```
 
 Becomes a span element with a text element under the current element.
