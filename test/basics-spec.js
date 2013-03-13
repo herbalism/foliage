@@ -16,7 +16,11 @@ define(['buster', 'foliage', 'jquery', 'lodash'],
 	       }),
 	       "elements can have text" : elemTest(function(e) {
 		   f.p("hello")(e);
-		   assert.equals(e.find('p').text().trim(), "hello");
+		   assert.equals("hello", e.find('p').text().trim());
+	       }),
+	       "numbers are interpreted as text" : elemTest(function(e) {
+		   f.p(1337)(e);
+		   assert.equals("1337", e.find('p').text().trim() );
 	       }),
 	       "elements can have attributes" : elemTest(function(e) {
 		   f.a({href: 'http://google.com'})(e);
