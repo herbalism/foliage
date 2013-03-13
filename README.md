@@ -42,13 +42,20 @@ Here is a summary of of the effect of different arguments to an element:
 "a string"
 ```
 
-becomes a text element under the element
+becomes a text element under the element.
+
+```javascript
+1337
+```
+
+becomes a textelemet under the element.
+
 
 ```javascript
 {attr1: 'value1', attr2: "value2"}
 ```
 
-Becomes attributes on the element
+Becomes attributes on the element.
 
 ```javascript
 "#some-id"

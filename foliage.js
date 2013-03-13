@@ -48,6 +48,7 @@ define(['jquery', 'lodash'], function($, _) {
                 default: children.push(textNode(arg)); break;
                 };break;
 	    case "object": handleObject(arg); break;
+	    case "number" :children.push(textNode(arg)); break;
 	    case "undefined" : break;
 		
 	    default: children.push(arg);
