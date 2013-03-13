@@ -51,6 +51,15 @@ becomes a text element under the element
 Becomes attributes on the element
 
 ```javascript
+"#some-id"
+```
+is equivalent to 
+```
+"{id: 'some-id'}"
+```
+This is convenient since the `id` attribute is so common.
+
+```javascript
 l.span("text")
 ```
 
