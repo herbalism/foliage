@@ -6,17 +6,21 @@ define(['jquery', 'lodash', 'when'], function($, _, when) {
                     create(value)(parent);
                 });
         }
-    }
+    };
+
+    function applyParent(element, parent) {
+        return element(parent);
+    };
 
     var create = function(val) {
 	return function(elem) {
 	    switch(typeof val){
 		case "object": {
                     if(when.isPromise(val)) {
-                        return eventually(val)(elem);
+                        return applyParent(eventually(val), elem);
                     }
                     else {
-		        elem.attr(val);
+		        applyParent(function(parent){return parent.attr(val)}, elem);
 		        return {
 			    undo:function() {
 			        var attr;
@@ -29,7 +33,7 @@ define(['jquery', 'lodash', 'when'], function($, _, when) {
 		}
 		case "string": {
 		    var oldText = elem.text();
-		    elem.append(val);
+		    applyParent(function(parent){return parent.append(val);}, elem);
 		    return {
 			undo:function(){
 			    elem.text(oldText);
@@ -37,7 +41,7 @@ define(['jquery', 'lodash', 'when'], function($, _, when) {
 		    }
 		} 
        	        case "function": {
-                    var handle = val(elem);
+                    var handle = applyParent(val, elem);
 		    return {
 			undo: handle.undo
 		    }

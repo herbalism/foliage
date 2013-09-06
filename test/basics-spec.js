@@ -97,6 +97,26 @@ define(['buster', 'foliage', 'jquery', 'lodash', 'when'],
                        });
                    eventuallyText.resolve("and here it is");
                    return result;
+               }),
+               "a promise that resolves as an object adds attributes when the promise resolves" : elemTest(function(e) {
+                   var eventuallyText = when.defer();
+                   f.p(eventuallyText.promise)(e);
+                   assert.equals(e.find('p').text().trim(), "");
+                   var result = when(eventuallyText.promise).then(
+                       function(value) {
+                           assert.equals(e.find('p').attr('hello'), 'world');
+                       });
+                   eventuallyText.resolve({hello:'world'});
+                   return result;
+               }),
+               "when parent is a promise children are added when the parent is resolved" : elemTest(function(e) {
+                   var eventuallyParent = when.defer();
+                   f.p("child paragraph")(eventuallyParent.promise);
+                   eventuallyParent.resolve(e);
+
+                   return when(eventuallyParent).then(function(parent) {
+                       assert.equals(e.find('p').text().trim(), 'child paragraph');
+                   });
                })
            });
        });
