@@ -9,7 +9,14 @@ define(['jquery', 'lodash', 'when'], function($, _, when) {
     };
 
     function applyParent(element, parent) {
-        return element(parent);
+        if(when.isPromise(parent)) {
+            return when(parent).then(function(resolved) {
+                return element(resolved);
+            });
+        }
+        else {
+            return element(parent);
+        }
     };
 
     var create = function(val) {
@@ -105,7 +112,7 @@ define(['jquery', 'lodash', 'when'], function($, _, when) {
 		if (decorate) {
 		    decorate (me);
 		}
-		var result = me.appendTo(parent);
+		var result = applyParent(function(p){return me.appendTo(p)}, parent);
 		result.undo = function() {result.remove()}
 		return result;
 	    }
@@ -135,7 +142,6 @@ define(['jquery', 'lodash', 'when'], function($, _, when) {
     function into(elem, child) {
 	return function(element) {
 	    var res = child($(elem, element))
-	    console.log(res);
 	    return res;
 	}
     }

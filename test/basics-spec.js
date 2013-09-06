@@ -112,11 +112,12 @@ define(['buster', 'foliage', 'jquery', 'lodash', 'when'],
                "when parent is a promise children are added when the parent is resolved" : elemTest(function(e) {
                    var eventuallyParent = when.defer();
                    f.p("child paragraph")(eventuallyParent.promise);
-                   eventuallyParent.resolve(e);
 
-                   return when(eventuallyParent).then(function(parent) {
+                   var result = when(eventuallyParent).then(function(parent) {
                        assert.equals(e.find('p').text().trim(), 'child paragraph');
                    });
+                   eventuallyParent.resolve(e);
+                   return result;
                })
            });
        });
