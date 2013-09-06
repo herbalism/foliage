@@ -1,5 +1,5 @@
-define(['buster', 'foliage', 'jquery', 'lodash'],
-       function(buster, f, $, _) {
+define(['buster', 'foliage', 'jquery', 'lodash', 'when'],
+       function(buster, f, $, _, when) {
 
 	   var assert = buster.assert;
 	   var refute = buster.refute;
@@ -86,6 +86,17 @@ define(['buster', 'foliage', 'jquery', 'lodash'],
 		   assert.exception(function() {
 		       elem(e);
 		   });
-	       })
+	       }),
+               "a promise that resolves as a string adds text when the promise resolves" : elemTest(function(e) {
+                   var eventuallyText = when.defer();
+                   f.p(eventuallyText.promise)(e);
+                   assert.equals(e.find('p').text().trim(), "");
+                   var result = when(eventuallyText.promise).then(
+                       function(value) {
+                           assert.equals(e.find('p').text().trim(), "and here it is");
+                       });
+                   eventuallyText.resolve("and here it is");
+                   return result;
+               })
            });
        });

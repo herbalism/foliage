@@ -1,17 +1,31 @@
-define(['jquery', 'lodash'], function($, _) {
+define(['jquery', 'lodash', 'when'], function($, _, when) {
+    function eventually(promise) {
+        return function(parent) {
+            when(promise).then(
+                function(value) {
+                    create(value)(parent);
+                });
+        }
+    }
+
     var create = function(val) {
 	return function(elem) {
 	    switch(typeof val){
 		case "object": {
-		    elem.attr(val);
-		    return {
-			undo:function() {
-			    var attr;
-			    for(attr in val) {
-				elem.removeAttr(attr);
+                    if(when.isPromise(val)) {
+                        return eventually(val)(elem);
+                    }
+                    else {
+		        elem.attr(val);
+		        return {
+			    undo:function() {
+			        var attr;
+			        for(attr in val) {
+				    elem.removeAttr(attr);
+			        }
 			    }
-			}
-		    }
+		        }
+                    }
 		}
 		case "string": {
 		    var oldText = elem.text();
