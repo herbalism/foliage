@@ -1,4 +1,4 @@
-define(['jquery', 'lodash', 'when'], function($, _, when) {
+var foliage = function($, _, when) {
     function eventually(promise) {
         return function(parent) {
             when(promise).then(
@@ -246,4 +246,14 @@ define(['jquery', 'lodash', 'when'], function($, _, when) {
     res.create = create;
     res.addClass = addClass;
     return res;
-});
+};
+
+
+if (typeof define !== 'undefined') {
+    define(['jquery', 'lodash', 'q'], foliage);
+} else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = foliage(
+        require('jquery'),
+        require('lodash'), 
+        require('q'));
+}
