@@ -1,14 +1,8 @@
-curl({
+var curl = {
     paths: {
-	jquery: 'ext/jquery-1.7.1.min',
-	lodash: 'modules/lodash/lodash'
+	jquery: 'node_modules/jquery/dist/jquery.min',
+	lodash: 'node_modules/lodash/lodash',
+        q: 'node_modules/q/q'
     }
-});
-
-define('buster', function() {
-    return buster;
-})
-
-window.require = curl;
-
+};
 

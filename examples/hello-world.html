@@ -1,9 +1,10 @@
 <html>
 <head>
-  <script src="loader.js" type="text/javascript"></script>
+  <script src="../loaderconf.js" type="text/javascript"></script>
+  <script>curl.baseUrl = ".."</script>
   <script src="../modules/curl/src/curl.js" type="text/javascript"></script>
   <script type="text/javascript">
-    curl(['hello-world'], function(main) {
+    curl(['examples/hello-world'], function(main) {
        main('#content');
     });
   </script>
