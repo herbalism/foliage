@@ -4,8 +4,9 @@
   <script>curl.baseUrl = ".."</script>
   <script src="../modules/curl/src/curl.js" type="text/javascript"></script>
   <script type="text/javascript">
-    curl(['examples/hello-world'], function(main) {
-       main('#content');
+    curl(['foliage-react', 'examples/hello-world'], function(render, main) {
+        console.log(render.text(main));
+        render.in('#content', main);
     });
   </script>
 </head>

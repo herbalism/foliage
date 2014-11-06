@@ -1,67 +1,14 @@
-var foliage = function($, _, when) {
-    function eventually(promise) {
-        return function(parent) {
-            when(promise).then(
-                function(value) {
-                    create(value)(parent);
-                });
-        }
-    };
+var foliage = function(_) {
 
     function applyParent(element, parent) {
-        if(when.isPromise(parent)) {
-            return when(parent).then(function(resolved) {
-                return element(resolved);
-            });
-        }
-        else {
-            return element(parent);
-        }
+        return element(parent);
     };
-
-    var create = function(val) {
-	return function(elem) {
-	    switch(typeof val){
-		case "object": {
-                    if(when.isPromise(val)) {
-                        return applyParent(eventually(val), elem);
-                    }
-                    else {
-		        applyParent(function(parent){return parent.attr(val)}, elem);
-		        return {
-			    undo:function() {
-			        var attr;
-			        for(attr in val) {
-				    elem.removeAttr(attr);
-			        }
-			    }
-		        }
-                    }
-		}
-		case "string": {
-		    var oldText = elem.text();
-		    applyParent(function(parent){return parent.append(val);}, elem);
-		    return {
-			undo:function(){
-			    elem.text(oldText);
-			}
-		    }
-		} 
-       	        case "function": {
-                    var handle = applyParent(val, elem);
-		    return {
-			undo: handle.undo
-		    }
-		};
-	    }
-	}
-    }
 
     function groupArgs(args) {
 	var children = [];
 	var attributes  = {};
 	function textNode(text) {
-	    return create('\n'+text);
+	    return function(dom){return'\n'+text};
 	}
 
 	var handleArg = function (arg) {
@@ -81,7 +28,7 @@ var foliage = function($, _, when) {
 	}
 
 	var handleObject = function(obj) {
-	    if($.isArray(obj)) {
+	    if(_.isArray(obj)) {
 		_.each(obj, function (item) {
 		    handleArg(item);
 		});
@@ -89,9 +36,7 @@ var foliage = function($, _, when) {
 		attributes = _.extend(attributes, obj);     
 	    }
 	}
-	
 
-	
 	_.each (args, handleArg)
 	    return {
 		children: children,
@@ -99,139 +44,18 @@ var foliage = function($, _, when) {
 	    }
     }
     
-    var e = function(name, decorate) {
+    var e = function(name) {
 	return function() {
 	    var args = groupArgs(arguments);
-	    return function(parent) {
-		var me = $('<'+name+' />');
-		create(args.attributes)(me);
-		for ( child in args.children ) {
-		    var ch = args.children[child]
-		    ch(me);
-		}
-		if (decorate) {
-		    decorate (me);
-		}
-		var result = applyParent(function(p){return me.appendTo(p)}, parent);
-		result.undo = function() {result.remove()}
-		return result;
+	    return function(dom) {
+                var children = _.map(args.children, function(child){
+                    return child(dom);
+                });
+		return  dom[name].apply(null,[args.attributes].concat(children));
 	    }
 	}
     }
     
-    function all() {
-	var children = arguments;
-	return function(element) {
-	    var done = _.map(children, function(child){
-		var undo = create(child)(element);
-		if (undo && undo.undo) {
-		    return undo;
-		}
-		else {
-		    throw Error("child of all did not provide an undo! ("+child+")");
-		}
-	    })
-
-	    return {undo: function() {
-		_.each(done, function(child){child.undo()})
-		    }
-		   }
-	}                          
-    }
-
-    function into(elem, child) {
-	return function(element) {
-	    var res = child($(elem, element))
-	    return res;
-	}
-    }
-
-
-    var res = _.reduce(
-	['a',
-	 'abbr',
-	 'acronym',
-	 'address',
-	 'area',
-	 'b',
-	 'base',
-	 'bdo',
-	 'big',
-	 'blockquote',
-	 'body',
-	 'br',
-	 'button',
-	 'caption',
-	 'cite',
-	 'code',
-	 'col',
-	 'colgroup',
-	 'dd',
-	 'del',
-	 'dfn',
-	 'div',
-	 'dl',
-	 'dt',
-	 'em',
-	 'fieldset',
-	 'form',
-	 'h1',
-	 'h2',
-	 'h3',
-	 'h4',
-	 'h5',
-	 'h6',
-	 'head',
-	 'hr',
-	 'html',
-	 'i',
-	 'img',
-	 'input',
-	 'ins',
-	 'kbd',
-	 'label',
-	 'legend',
-	 'li',
-	 'link',
-	 'map',
-	 'meta',
-	 'noscript',
-	 'object',
-	 'ol',
-	 'optgroup',
-	 'option',
-	 'p',
-	 'param',
-	 'pre',
-	 'q',
-	 'samp',
-	 'script',
-	 'select',
-	 'small',
-	 'span',
-	 'strong',
-	 'style',
-	 'sub',
-	 'sup',
-	 'table',
-	 'tbody',
-	 'td',
-	 'textarea',
-	 'tfoot',
-	 'th',
-	 'thead',
-	 'title',
-	 'tr',
-	 'tt',
-	 'ul',
-	 'var'],
-	function(res, name) {
-	    res[name] = e(name);
-	    return res;
-	},
-	{element:e});
-    
-
     var addClass = function(c) {
 	return function(e) {
 	    e.addClass(c);
@@ -241,19 +65,131 @@ var foliage = function($, _, when) {
 	}
     }
 
-    res.all = all;
-    res.into = into;
-    res.create = create;
-    res.addClass = addClass;
+    var res = _.reduce(
+	['a', 
+         'abbr',
+         'address',
+         'area',
+         'article',
+         'aside',
+         'audio',
+         'b',
+         'base',
+         'bdi',
+         'bdo',
+         'big',
+         'blockquote',
+         'body',
+         'br',
+         'button',
+         'canvas',
+         'caption',
+         'cite',
+         'code',
+         'col',
+         'colgroup',
+         'data',
+         'datalist',
+         'dd',
+         'del',
+         'details',
+         'dfn',
+         'dialog',
+         'div',
+         'dl',
+         'dt',
+         'em',
+         'embed',
+         'fieldset',
+         'figcaption',
+         'figure',
+         'footer',
+         'form',
+         'h1',
+         'h2',
+         'h3',
+         'h4',
+         'h5',
+         'h6',
+         'head',
+         'header',
+         'hr',
+         'html',
+         'i',
+         'iframe',
+         'img',
+         'input',
+         'ins',
+         'kbd',
+         'keygen',
+         'label',
+         'legend',
+         'li',
+         'link',
+         'main',
+         'map',
+         'mark',
+         'menu',
+         'menuitem',
+         'meta',
+         'meter',
+         'nav',
+         'noscript',
+         'object',
+         'ol',
+         'optgroup',
+         'option',
+         'output',
+         'p',
+         'param',
+         'picture',
+         'pre',
+         'progress',
+         'q',
+         'rp',
+         'rt',
+         'ruby',
+         's',
+         'samp',
+         'script',
+         'section',
+         'select',
+         'small',
+         'source',
+         'span',
+         'strong',
+         'style',
+         'sub',
+         'summary',
+         'sup',
+         'table',
+         'tbody',
+         'td',
+         'textarea',
+         'tfoot',
+         'th',
+         'thead',
+         'time',
+         'title',
+         'tr',
+         'track',
+         'u',
+         'ul',
+         'var',
+         'video',
+         'wbr'],
+	function(res, name) {
+	    res[name] = e(name);
+	    return res;
+	},
+	{element:e});
+
     return res;
 };
 
 
 if (typeof define !== 'undefined') {
-    define(['jquery', 'lodash', 'q'], foliage);
+    define(['lodash'], foliage);
 } else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = foliage(
-        require('jquery'),
-        require('lodash'), 
-        require('q'));
+    module.exports = foliage(require('lodash'));
 }
