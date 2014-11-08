@@ -8,7 +8,7 @@ function foliageReact(react){
                 react.renderComponent(makeReactInstance(create), document.getElementById(id));
             },
         text: function(create) {
-            return react.renderComponentToString(makeReactInstance(create));
+            return react.renderComponentToStaticMarkup(makeReactInstance(create));
         }
     };
 };

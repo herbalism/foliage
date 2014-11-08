@@ -4,6 +4,10 @@ var foliage = function(_) {
         return element(parent);
     };
 
+    function unsafeHtml(html){
+        return {dangerouslySetInnerHTML:{__html: html}};
+    };
+
     function groupArgs(args) {
 	var children = [];
 	var attributes  = {};
@@ -183,7 +187,7 @@ var foliage = function(_) {
 	    return res;
 	},
 	{element:e});
-
+    res.unsafeHtml = unsafeHtml;
     return res;
 };
 
