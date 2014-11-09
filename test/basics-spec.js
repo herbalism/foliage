@@ -20,7 +20,7 @@ function basicsSpec(spec, f, _, when, dom) {
 	       }),
 	       "elements can have attributes" : elemTest(function(e) {
 		   var res=f.a({href: 'http://google.com'})(e);
-		   return assert.equals(res.find('a').attr('href'), "http://google.com");
+		   return assert.equals(res.find('a').attr['href'], "http://google.com");
 	       }),
                "text with leading # is a shorthand for {id:...}" : elemTest(function(e) {
 		   var res=f.p("#this-is-an-id", "this is a text")(e);

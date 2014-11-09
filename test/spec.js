@@ -1,6 +1,18 @@
 (function(){
-    function spec() {
-        var asserts = {};
+    function spec(q) {
+        function makeError(message) {
+            return new Error(message);
+        };
+
+        var asserts = {
+            
+            equals:function(actual, expected){
+                return expected === actual ? 
+                    q.resolve(actual) : 
+                    q.reject(makeError("expeted ["+actual+"] to be ["+expected+"]"));
+            }
+        };
+
         function makeSpec(name, specs){
             return specs;
         };
@@ -9,8 +21,8 @@
     }
 
     if (typeof define !== 'undefined') {
-        define([], spec);
+        define(['q'], spec);
     } else if (typeof module !== 'undefined' && module.exports) {
-        module.exports = spec();
+        module.exports = spec(require('q'));
     }
 })();
