@@ -7,25 +7,29 @@
                     name: name,
                     attr: attr,
                     text: _.foldl(children, function(text, current){
-                        return (_.isObject(current) || _.isFunction(current) || _.isArray(current)) ?
+                        return (_.isObject(current) || 
+                                _.isFunction(current) || 
+                                _.isArray(current)) ?
                             text :
                             text + current;
                     }, ""),
-                    children:children
+                    children:_.filter(children, _.isObject)
                 };
-                var matchers = {
-                    '#':function(node){
-                        return (node.attr && node.attr.id && node.attr.id === pattern.substring(1))
-                    }
-                }
-                var patternChars = ['#'];
+
                 function find(pattern) {
-                    var patternChar = matchers[pattern.substring(0,1)];
-                    if(_.contains(patternChars, patternChar)) {
-                        var doMatch = matchers[patternChar];
-                        if(doMatch === undefined) {
-                            throw new Error("Cannot match pattern "+pattern);
+                    var matchers = {
+                        '#':function(node){
+                            var expectedId = pattern.substring(1);
+                            console.log("checking for ID ", expectedId," on node");
+                            console.dir(node);
+                            return (node.attr && node.attr.id && node.attr.id === expectedId)
                         }
+                    }
+                    var doMatch = matchers[pattern.substring(0,1)];
+                    
+                    if(doMatch) {
+                        console.log("do match ", doMatch);
+                        return doMatch(node) ? node : undefined;
                     }
                     else {
                         return node.name === pattern ? node : undefined;

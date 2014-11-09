@@ -46,13 +46,13 @@ function basicsSpec(spec, f, _, when, dom) {
 		   var res=f.a("before", {href: 'http://agicavar res=f.se'}, "after")(e);
                    return assert.all(
 		       assert.equals(res.find("a").text.trim(), "before\nafter"),
-		       assert.equals(res.find("a").attr('href'), "http://agicavar res=f.se"));
+		       assert.equals(res.find("a").attr['href'], "http://agicavar res=f.se"));
 	       }),
 	       "attributes can be mixed with elements" : elemTest(function(e) {
 		   var res=f.a({href: "http://google.com"}, f.strong("hello"))(e);
                    return assert.all(
 		       assert.equals(res.find("a strong").text.trim(), "hello"),
-		       assert.equals(res.find("a").attr('href'), "http://google.com"));
+		       assert.equals(res.find("a").attr['href'], "http://google.com"));
 	       }),
 	       "attributes are merged": elemTest(function(e) {
 		   var res=f.img({src: "http://placekitten.com/e/200/300"},
