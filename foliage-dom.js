@@ -1,59 +1,60 @@
 (function(){
     function foliageDom(_) {
+        function text(node){
+            return _.foldl(node.children, function(text, current){
+                return (_.isObject(current) || 
+                        _.isFunction(current) || 
+                        _.isArray(current)) ?
+                    text :
+                    text + current;
+            }, "");
+        };
+
+        function find(node, pattern) {
+            function findPath(currentPattern){
+                return function(nodeToCheck) {
+                    var matchers = {
+                        '#':function(node){
+                            var expectedId = currentPattern.substring(1);
+                            return (node.attr && 
+                                    node.attr.id && 
+                                    node.attr.id === expectedId);
+                        }
+                    }
+                    var doMatch = matchers[currentPattern.substring(0,1)];
+                    
+                    if(doMatch) {
+                        return doMatch(nodeToCheck) ? nodeToCheck : undefined;
+                    }
+                    else {
+                        return nodeToCheck.name === currentPattern ? nodeToCheck : undefined;
+                    }
+                }
+            }
+            
+            var path = pattern.split(' ');
+
+            var resolvePath = function(candidates, path){
+                var found = _(candidates).
+                    map(findPath(path[0])).
+                    filter(function(val){return val !== undefined});
+                if(path.length > 1) {
+                    return resolvePath(found.pluck('children').flatten().value(), path.slice(1));
+                }
+                return found.value();
+            }
+            var res = resolvePath([node], path);
+            return res[0];
+        };
+
         function e(name) {
             return function(attr){
                 var children = _.toArray(arguments).slice(1);
-                var node = {
+                return {
                     name: name,
                     attr: attr,
-                    text: _.foldl(children, function(text, current){
-                        return (_.isObject(current) || 
-                                _.isFunction(current) || 
-                                _.isArray(current)) ?
-                            text :
-                            text + current;
-                    }, ""),
-                    children:_.filter(children, _.isObject)
+                    children:children
                 };
-
-                function find(pattern) {
-                    function findPath(currentPattern){
-                        return function(nodeToCheck) {
-                            var matchers = {
-                                '#':function(node){
-                                    var expectedId = currentPattern.substring(1);
-                                    return (node.attr && 
-                                            node.attr.id && 
-                                            node.attr.id === expectedId);
-                                }
-                            }
-                            var doMatch = matchers[currentPattern.substring(0,1)];
-                            
-                            if(doMatch) {
-                                return doMatch(nodeToCheck) ? nodeToCheck : undefined;
-                            }
-                            else {
-                                return nodeToCheck.name === currentPattern ? nodeToCheck : undefined;
-                            }
-                        }
-                    }
-                    
-                    var path = pattern.split(' ');
-
-                    var resolvePath = function(candidates, path){
-                        var found = _(candidates).
-                            map(findPath(path[0])).
-                            filter(function(val){return val !== undefined});
-                        if(path.length > 1) {
-                            return resolvePath(found.pluck('children').flatten().value(), path.slice(1));
-                        }
-                        return found.value();
-                    }
-                    var res = resolvePath([node], path);
-                    return res[0];
-                };
-                node.find = find;
-                return node;
             }
         };
         return _.reduce(
@@ -173,7 +174,10 @@
 	        res[name] = e(name);
 	        return res;
 	    },
-	    {});
+	    {
+                find: find,
+                text: text
+            });
     }
 
     if (typeof define !== 'undefined') {
