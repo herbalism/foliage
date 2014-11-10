@@ -17,24 +17,40 @@
                 };
 
                 function find(pattern) {
-                    var matchers = {
-                        '#':function(node){
-                            var expectedId = pattern.substring(1);
-                            console.log("checking for ID ", expectedId," on node");
-                            console.dir(node);
-                            return (node.attr && node.attr.id && node.attr.id === expectedId)
+                    function findPath(currentPattern){
+                        return function(nodeToCheck) {
+                            var matchers = {
+                                '#':function(node){
+                                    var expectedId = currentPattern.substring(1);
+                                    return (node.attr && 
+                                            node.attr.id && 
+                                            node.attr.id === expectedId);
+                                }
+                            }
+                            var doMatch = matchers[currentPattern.substring(0,1)];
+                            
+                            if(doMatch) {
+                                return doMatch(nodeToCheck) ? nodeToCheck : undefined;
+                            }
+                            else {
+                                return nodeToCheck.name === currentPattern ? nodeToCheck : undefined;
+                            }
                         }
                     }
-                    var doMatch = matchers[pattern.substring(0,1)];
                     
-                    if(doMatch) {
-                        console.log("do match ", doMatch);
-                        return doMatch(node) ? node : undefined;
+                    var path = pattern.split(' ');
+
+                    var resolvePath = function(candidates, path){
+                        var found = _(candidates).
+                            map(findPath(path[0])).
+                            filter(function(val){return val !== undefined});
+                        if(path.length > 1) {
+                            return resolvePath(found.pluck('children').flatten().value(), path.slice(1));
+                        }
+                        return found.value();
                     }
-                    else {
-                        return node.name === pattern ? node : undefined;
-                    }
-                    
+                    var res = resolvePath([node], path);
+                    return res[0];
                 };
                 node.find = find;
                 return node;

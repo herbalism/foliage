@@ -58,8 +58,8 @@ function basicsSpec(spec, f, _, when, dom) {
 		   var res=f.img({src: "http://placekitten.com/e/200/300"},
 			 {alt: "a cute kitten"})(e);
                      return assert.all(
-		       assert.equals(res.find('img').attr('src'), "http://placekitten.com/e/200/300"),
-		       assert.equals(res.find('img').attr('alt'), "a cute kitten"));
+		       assert.equals(res.find('img').attr['src'], "http://placekitten.com/e/200/300"),
+		       assert.equals(res.find('img').attr['alt'], "a cute kitten"));
 	       }),
 	       "lists of text elements are added as individual elements" : elemTest(function(e) {
 		   var res=f.p(["text1", "text2"])(e);
