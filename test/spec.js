@@ -4,12 +4,39 @@
             return new Error(message);
         };
 
+        function removeTrailingComma(text) {
+            var trimmed = text.trim();
+            return _.last(trimmed) === ',' ? trimmed.substring(0,trimmed.length-1) : trimmed;
+        };
+
+        function describeArray(value) {
+            return removeTrailingComma(_.foldl(value, function(total, current){
+                return total + describe(current)+", ";
+            }, "["))+"]";
+        };
+
+        function describeObject(value) {
+            return removeTrailingComma(_.foldl(_.pairs(value), function(total, current){
+                return total + current[0]+":"+describe(current[1])+", ";
+            }, "{"))+"}";
+        };
+
+        function describe(value) {
+            if(_.isArray(value)) {
+                return describeArray(value);
+            }
+            if(_.isObject(value)) {
+                return describeObject(value)
+            }
+            return ""+value;
+        };
+
         var asserts = {
             
             equals:function(actual, expected){
-                return expected === actual ? 
+                return _(expected).isEqual(actual)? 
                     q.resolve(actual) : 
-                    q.reject(makeError("expeted ["+actual+"] to be ["+expected+"]"));
+                    q.reject(makeError("expected:\n"+describe(actual)+"\nto be:\n"+describe(expected)));
             },
             all:function(){
                 return q.all(_.toArray(arguments));

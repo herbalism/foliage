@@ -40,7 +40,7 @@ function basicsSpec(spec, f, _, when, dom) {
 	       }),
 	       "elements can be mixed with text" : elemTest(function(e) {
 		   var res=f.p("before", f.strong("middle"), "after")(e);
-		   return assert.equals(e.find(res, 'p'), e.p("before", e.strong("\nmiddle"), "\nafter"));
+		   return assert.equals(e.find(res, 'p'), e.p({}, "\nbefore", e.strong({},"\nmiddle"), "\nafter"));
 	       }),
 	       "attributes can be mixed with text" : elemTest(function(e) {
 		   var res=f.a("before", {href: 'http://agicavar res=f.se'}, "after")(e);
