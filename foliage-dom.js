@@ -19,6 +19,12 @@
                             return (node.attr && 
                                     node.attr.id && 
                                     node.attr.id === expectedId);
+                        },
+                        '.':function(node){
+                            var c = currentPattern.substring(1);
+                            return (node.attr && 
+                                    node.attr.class && 
+                                    _.contains(node.attr.class, c));
                         }
                     }
                     var doMatch = matchers[currentPattern.substring(0,1)];

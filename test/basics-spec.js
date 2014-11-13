@@ -30,6 +30,12 @@ function basicsSpec(spec, f, _, when, dom) {
 		   var res=f.p(".this-is-a-class", "this is a text")(e);
 		   return assert.equals(e.text(e.find(res, ".this-is-a-class")).trim(), "this is a text");
 	       }),
+               "can add several classes" : elemTest(function(e) {
+		   var res=f.p(".this-is-a-class", ".another", "this is a text")(e);
+		   return assert.all(
+                       assert.equals(e.text(e.find(res, ".this-is-a-class")).trim(), "this is a text"),
+                       assert.equals(e.text(e.find(res, ".another")).trim(), "this is a text"));
+	       }),
 	       "elements can have subelements" : elemTest(function(e) {
 		   var res=f.p(f.strong("strong text"))(e);
 		   return assert.equals(e.text(e.find(res, 'p strong')).trim(), "strong text");

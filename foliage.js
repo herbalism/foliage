@@ -20,7 +20,7 @@ var foliage = function(_) {
 	    case "string": 
                 switch (arg.charAt(0)) {
                 case "#": handleObject({'id': arg.substr(1)}); break;
-                case ".": children.push(addClass(arg.substr(1))); break;
+                case ".": handleObject({class:arg.substr(1)}); break;
                 default: children.push(textNode(arg)); break;
                 };break;
 	    case "object": handleObject(arg); break;
@@ -37,7 +37,11 @@ var foliage = function(_) {
 		    handleArg(item);
 		});
 	    } else {
+                c = attributes.class;
 		attributes = _.extend(attributes, obj);     
+                if(c && !_.contains(attributes.class, c)) {
+                    attributes.class = c + ' ' + attributes.class;
+                }
 	    }
 	}
 
@@ -60,14 +64,6 @@ var foliage = function(_) {
 	}
     }
     
-    var addClass = function(c) {
-	return function(e) {
-	    e.addClass(c);
-	    return {
-		undo: function(){e.removeClass(c)}
-	    }
-	}
-    }
 
     var res = _.reduce(
 	['a', 
