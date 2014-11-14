@@ -183,11 +183,9 @@
         return res;
     };
 
-
     if (typeof define !== 'undefined') {
         define(['lodash'], foliage);
     } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = foliage(require('lodash'));
     }
-
-})()
+})();

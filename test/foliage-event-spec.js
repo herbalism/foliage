@@ -31,10 +31,10 @@
         });
     }
     if (typeof define !== 'undefined') {
-        define(['spec', 'foliage', 'lodash', 'foliage-event', 'foliage-dom'], eventSpecs);
+        define(['tattler-spec', 'foliage', 'lodash', 'foliage-event', 'foliage-dom'], eventSpecs);
     } else if (typeof module !== 'undefined' && module.exports) {
         module.exports = eventSpecs(
-            require('./spec'), 
+            require('tattler/js/tattler-spec'), 
             require('../foliage'), 
             require('lodash'),
             require('../foliage-event'),
