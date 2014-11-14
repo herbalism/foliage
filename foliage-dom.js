@@ -1,5 +1,10 @@
 (function(){
     function foliageDom(_) {
+        function trigger(node, event, payload){
+            var handler = node.attr['on'+event];
+            handler && handler(payload);
+        };
+        
         function text(node){
             return _.foldl(node.children, function(text, current){
                 return (_.isObject(current) || 
@@ -182,7 +187,8 @@
 	    },
 	    {
                 find: find,
-                text: text
+                text: text,
+                trigger: trigger
             });
     }
 

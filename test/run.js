@@ -1,6 +1,6 @@
 (function(){
-    function run(tattler, q, _,  basics){
-        var results = tattler.run(basics);
+    function run(tattler, q, _,  basics, events){
+        var results = tattler.run([basics, events]);
         var summary = tattler.streamsFn.fold(results, function(acc, current){
             return q([acc, current]).spread(function(racc, rcurrent){
                 process.stdout.write(rcurrent.passed ? '.' : 'E');
@@ -41,8 +41,14 @@
     }
 
     if (typeof define !== 'undefined') {
-        define(['tattler', 'q', 'lodash', './basics-spec'], run);
+        define(['tattler', 'q', 'lodash', './basics-spec', './foliage-event-spec'], run);
     } else if (typeof module !== 'undefined' && module.exports) {
-        module.exports = run(require('tattler'), require('q'), require('lodash'), require('./basics-spec'));
+        module.exports = run(
+            require('tattler'), 
+            require('q'), 
+            require('lodash'), 
+            require('./basics-spec'),
+            require('./foliage-event-spec')
+        );
     }
 })();
