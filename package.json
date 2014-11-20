@@ -12,7 +12,7 @@
     }
   ],
   "devDependencies": {
-      "tattler": "0.0.2"
+      "tattler": "0.0.3"
   },
   "dependencies": {
       "lodash": "^2.4.1",
