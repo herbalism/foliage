@@ -61,6 +61,12 @@
         function e(name) {
             return function(attr){
                 var children = _.toArray(arguments).slice(1);
+                children = _.foldl(children, function(acc, next, index){
+                    if(_.isFunction(next.attach)) {
+                        next.attach(acc, index);
+                    }
+                    return acc;
+                }, children);
                 return {
                     name: name,
                     attr: attr,
@@ -68,6 +74,27 @@
                 };
             }
         };
+        var result = {
+            find: find,
+            text: text,
+            trigger: trigger
+        };
+
+        result.__dynamic = function(factory, initial) {
+            var elementsToUpdate;
+            var indexToUpdate;
+            function attach (elements, index) {
+                elementsToUpdate = elements;
+                indexToUpdate = index;
+                elements[index] = factory(initial)(result);
+            };
+            var res = function(next) {
+                elementsToUpdate[indexToUpdate] = factory(next)(result);
+            }
+            res.attach = attach;
+            return res;
+        };
+
         return _.reduce(
 	    ['a', 
              'abbr',
@@ -185,11 +212,7 @@
 	        res[name] = e(name);
 	        return res;
 	    },
-	    {
-                find: find,
-                text: text,
-                trigger: trigger
-            });
+	    result);
     }
 
     if (typeof define !== 'undefined') {
