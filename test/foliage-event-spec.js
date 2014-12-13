@@ -8,8 +8,8 @@
 	return spec('events', {
 	    'event can be assigned by name' : elemTest(function(dom) {
 		var value;
-		var armed = f.p(on('click', function(){value = 'clicked'}))(dom);
-		dom.trigger(armed, 'click');
+		var armed = f.p(on('Click', function(){value = 'clicked'}))(dom);
+		dom.trigger(armed, 'Click');
 		return assert.equals(value, 'clicked');
 	    }),
 	    'many events can be assigned at once' : elemTest(function(dom) {
@@ -25,7 +25,7 @@
 	    'events can be assigned with sugar' : elemTest(function(dom) {
 		var value = '';
 		var armed = f.p(on.click(function(){value = value + 'clicked'}))(dom);
-		dom.trigger(armed, 'click');
+		dom.trigger(armed, 'Click');
 		return assert.equals(value, 'clicked');
 	    })
         });

@@ -83,16 +83,16 @@
         result.__dynamic = function(factory, initial) {
             var elementsToUpdate;
             var indexToUpdate;
-            function attach (elements, index) {
-                elementsToUpdate = elements;
-                indexToUpdate = index;
-                elements[index] = factory(initial)(result);
-            };
-            var res = function(next) {
-                elementsToUpdate[indexToUpdate] = factory(next)(result);
+            return {
+                attach:function (elements, index) {
+                    elementsToUpdate = elements;
+                    indexToUpdate = index;
+                    elements[index] = factory(initial)(result);
+                },
+                __next: function(next) {
+                    elementsToUpdate[indexToUpdate] = factory(next)(result);
+                }
             }
-            res.attach = attach;
-            return res;
         };
 
         return _.reduce(
