@@ -12,14 +12,15 @@
     }
   ],
   "devDependencies": {
-      "tattler": "0.0.3"
+    "tattler": "0.0.3"
   },
   "dependencies": {
-      "lodash": "^2.4.1",
-      "q": "^1.0.1",
-      "react": "^0.11.2"
+    "curl-amd": "^0.8.12",
+    "lodash": "^2.4.1",
+    "q": "^1.0.1",
+    "react": "^0.11.2"
   },
-  "scripts":{
-      "test": "node test/run.js"
+  "scripts": {
+    "test": "node test/run.js"
   }
 }
