@@ -7,14 +7,14 @@
                     return react.createElement.apply(null , [name].concat(args));
                 };
             },
-            dynamic:function(factory, initial) {
+            dynamic:function(elementFactory, initial) {
                 var component;
                 var result = react.createElement(react.createClass({
                     getInitialState : function (){
                         return initial;},
                     render: function(){
                         component = this;
-                        return factory(this.state)(react.DOM);
+                        return elementFactory(this.state)(factory);
                     }
                 }));
                 result.__proto__.__next = function(state){
@@ -40,7 +40,8 @@
                                  document.getElementById(id));
                 },
             text: function(create) {
-                return react.renderComponentToStaticMarkup(makeReactInstance(create));
+                console.log('text: ', react);
+                return react.renderToStaticMarkup(react.createElement(makeReactInstance(create)));
             }
 
         }
