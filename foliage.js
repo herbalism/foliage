@@ -55,7 +55,7 @@
                     var children = _.map(args.children, function(child){
                         return child(dom);
                     });
-		    return  dom[name].apply(null,[args.attributes].concat(children));
+		    return  dom.createElement(name).apply(null,[args.attributes].concat(children));
 	        }
 	    }
         }

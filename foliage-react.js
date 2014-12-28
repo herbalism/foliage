@@ -1,39 +1,50 @@
 (function(){
     function foliageReact(react){
-        react.DOM.__dynamic = function(factory, initial) {
-            var component;
-            var result = react.createElement(react.createClass({
-                getInitialState : function (){
-                    return initial;},
-                render: function(){
-                    component = this;
-                    return factory(this.state)(react.DOM);
-                }
-            }));
-            result.__proto__.__next = function(state){
-                if(component){
-                    component.setState(state);
-                }
-
-            };
-            return result;
+        var factory = {
+            createElement: function(name){
+                return function(){
+                    var args = Array.prototype.slice.call(arguments,0);
+                    return react.createElement.apply(null , [name].concat(args));
+                };
+            },
+            dynamic:function(factory, initial) {
+                var component;
+                var result = react.createElement(react.createClass({
+                    getInitialState : function (){
+                        return initial;},
+                    render: function(){
+                        component = this;
+                        return factory(this.state)(react.DOM);
+                    }
+                }));
+                result.__proto__.__next = function(state){
+                    if(component){
+                        component.setState(state);
+                    }
+                };
+                return result;
+            }
         };
 
         function makeReactInstance(create){
-            return react.createClass({render:function(){return create(react.DOM)}})();
+            return react.createClass({
+                render:function(){return create(factory)}
+            });
         };
         
         return {
                 in: function(element, create){
                     var id = element.substring(1);
-                    react.renderComponent(makeReactInstance(create), document.getElementById(id));
+                    var instance = makeReactInstance(create);
+                    react.render(react.createElement(instance),
+                                 document.getElementById(id));
                 },
             text: function(create) {
                 return react.renderComponentToStaticMarkup(makeReactInstance(create));
             }
 
-            }
-        };
+        }
+    };
     
     
 
