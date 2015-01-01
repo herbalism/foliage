@@ -41,11 +41,36 @@
 	        }
 	    }
 
-	    _.each (args, handleArg)
-	        return {
-		    children: children,
-		    attributes: attributes
-	        }
+            function mergeLists() {
+                return _.foldl(arguments,
+                               function(result, current){
+                                   if(current) {
+                                       return ((result || '') + ' ' + current).trim();
+                                   }
+                                   return result; 
+                               });
+            }
+            
+            function handleSynonyms(attributes){
+                var className =  mergeLists(
+                    attributes['class'],
+                    attributes.classes,
+                    attributes.className,
+                    attributes.classNames);
+                delete attributes.classes;
+                delete attributes.className;
+                delete attributes.classNames;
+                if(className) {
+                    attributes['class'] = className;
+                }
+                return attributes;
+            }
+            
+	    _.each (args, handleArg);
+	    return {
+		children: children,
+		attributes: handleSynonyms(attributes)
+	    };
         }
         
         var e = function(name) {

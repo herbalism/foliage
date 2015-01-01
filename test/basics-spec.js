@@ -75,7 +75,19 @@
 	    "sublists of text elements are added as individual elements" : elemTest(function(e) {
 		var res=f.p(["text1", ["text2", "text3"]])(e);
 		return assert.equals(e.text(e.find(res, 'p')).trim(),"text1\ntext2\ntext3");
-	    })
+	    }),
+            "classes is a synonym for class" : elemTest(function(e) {
+                var res=f.p({classes:'someClass'})(e);
+                return assert.equals(e.find(res, 'p').attr['class'], "someClass");
+            }),
+            "className is a synonym for class" : elemTest(function(e) {
+                var res=f.p({className:'someClass'})(e);
+                return assert.equals(e.find(res, 'p').attr['class'], "someClass");
+            }),
+            "classNames is a synonym for class" : elemTest(function(e) {
+                var res=f.p({classNames:'someClass'})(e);
+                return assert.equals(e.find(res, 'p').attr['class'], "someClass");
+            })
         });
     }
 

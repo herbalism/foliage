@@ -2,8 +2,12 @@
     function foliageReact(react){
         var factory = {
             createElement: function(name){
-                return function(){
+                return function(attr){
                     var args = Array.prototype.slice.call(arguments,0);
+                    if(attr['class']) {
+                        attr.className=attr['class'];
+                        delete attr.class;
+                    }
                     return react.createElement.apply(null , [name].concat(args));
                 };
             },
