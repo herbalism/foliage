@@ -27,21 +27,7 @@
 	        }
 	    }
 
-	    var handleObject = function(obj) {
-	        if(_.isArray(obj)) {
-		    _.each(obj, function (item) {
-		        handleArg(item);
-		    });
-	        } else {
-                    c = attributes.class;
-		    attributes = _.extend(attributes, obj);     
-                    if(c && !_.contains(attributes.class, c)) {
-                        attributes.class = c + ' ' + attributes.class;
-                    }
-	        }
-	    }
-
-            function mergeLists() {
+                        function mergeLists() {
                 return _.foldl(arguments,
                                function(result, current){
                                    if(current) {
@@ -66,10 +52,28 @@
                 return attributes;
             }
             
+	    var handleObject = function(obj) {
+	        if(_.isArray(obj)) {
+		    _.each(obj, function (item) {
+		        handleArg(item);
+		    });
+	        } else {
+                    obj = handleSynonyms(obj);
+                    obj = _.mapValues(obj, function(value){
+                        return _.isArray(value) ? value.join(' ') : value;
+                    })
+                    c = attributes.class;
+		    attributes = _.extend(attributes, obj);
+                    if(c && !_.contains(attributes.class, c)) {
+                        attributes.class = c + ' ' + attributes.class;
+                    }
+	        }
+	    }
+
 	    _.each (args, handleArg);
 	    return {
 		children: children,
-		attributes: handleSynonyms(attributes)
+		attributes: attributes
 	    };
         }
         

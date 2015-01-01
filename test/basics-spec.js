@@ -34,8 +34,8 @@
             "can add several classes" : elemTest(function(e) {
 		var res=f.p(".this-is-a-class", ".another", "this is a text")(e);
 		return assert.all(
-                    assert.equals(e.text(e.find(res, ".this-is-a-class")).trim(), "this is a text"),
-                    assert.equals(e.text(e.find(res, ".another")).trim(), "this is a text"));
+                    assert.equals(e.text(e.find(res, ".another")).trim(), "this is a text"),
+                    assert.equals(e.text(e.find(res, ".this-is-a-class")).trim(), "this is a text"));
 	    }),
 	    "elements can have subelements" : elemTest(function(e) {
 		var res=f.p(f.strong("strong text"))(e);
@@ -87,6 +87,10 @@
             "classNames is a synonym for class" : elemTest(function(e) {
                 var res=f.p({classNames:'someClass'})(e);
                 return assert.equals(e.find(res, 'p').attr['class'], "someClass");
+            }),
+            "an attribute with a list value becomes a space separated list":elemTest(function(e){
+                var res=f.p({'class':['class1', 'class2']})(e);
+                return assert.equals(e.find(res, 'p').attr['class'], 'class1 class2');
             })
         });
     }
