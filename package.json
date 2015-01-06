@@ -1,5 +1,5 @@
 {
-  "name": "foliage",
+  "name": "herb-foliage",
   "version": "0.0.1",
   "description": "A DSL to write HTML to a DOM",
   "author": {
@@ -12,10 +12,10 @@
     }
   ],
   "devDependencies": {
-    "tattler": "0.0.3"
+      "tattler": "0.0.3",
+      "curl-amd": "^0.8.12"
   },
   "dependencies": {
-    "curl-amd": "^0.8.12",
     "lodash": "^2.4.1",
     "q": "^1.0.1",
     "react": "^0.12"
