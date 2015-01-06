@@ -1,17 +1,8 @@
-curl({
-    baseUrl: 'lib/',
-
+var curl = {
     paths: {
-	jquery: 'jquery-1.7.1.min',
-	underscore: 'ext/underscore',
-	'test' : '../test'
+        react: 'node_modules/react/dist/react',
+	lodash: 'node_modules/lodash/lodash',
+        q: 'node_modules/q/q'
     }
-});
-
-define('buster', function() {
-    return buster;
-})
-
-window.require = curl;
-
+};
 

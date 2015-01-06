@@ -42,16 +42,47 @@ Here is a summary of of the effect of different arguments to an element:
 "a string"
 ```
 
-becomes a text element under the element
+becomes a text element under the element.
+
+```javascript
+1337
+```
+
+becomes a textelemet under the element.
+
 
 ```javascript
 {attr1: 'value1', attr2: "value2"}
 ```
 
-Becomes attributes on the element
+Becomes attributes on the element.
 
 ```javascript
-l.span("text")
+"#some-id"
+```
+
+is equivalent to 
+
+```
+{id: 'some-id'}
+```
+
+This is convenient since the `id` attribute is so common.
+
+```javascript
+".some-class"
+```
+
+is equivalent to
+
+```
+f.addClass("some-class")
+```
+to make it easier to add one or more classes to an element.
+
+
+```javascript
+f.span("text")
 ```
 
 Becomes a span element with a text element under the current element.
