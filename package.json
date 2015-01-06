@@ -1,26 +1,31 @@
 {
-  "name": "herb-foliage",
-  "version": "0.0.1",
-  "description": "A DSL to write HTML to a DOM",
-  "author": {
-    "name": "Joakim Ohlrogge"
-  },
-  "contributors": [
-    {
-      "name": "Joakim Ohlrogge",
-      "url": "https://github.com/johlrogge"
+    "name": "herb-foliage",
+    "version": "0.0.1",
+    "description": "A DSL to write HTML to a DOM",
+    "main":"foliage.js",
+    "author": {
+        "name": "Joakim Ohlrogge"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/herbalism/foliage.git"
+    },
+    "contributors": [
+        {
+            "name": "Joakim Ohlrogge",
+            "url": "https://github.com/johlrogge"
+        }
+    ],
+    "devDependencies": {
+        "tattler": "0.0.3",
+        "curl-amd": "^0.8.12"
+    },
+    "dependencies": {
+        "lodash": "^2.4.1",
+        "q": "^1.0.1",
+        "react": "^0.12"
+    },
+    "scripts": {
+        "test": "node test/run.js"
     }
-  ],
-  "devDependencies": {
-      "tattler": "0.0.3",
-      "curl-amd": "^0.8.12"
-  },
-  "dependencies": {
-    "lodash": "^2.4.1",
-    "q": "^1.0.1",
-    "react": "^0.12"
-  },
-  "scripts": {
-    "test": "node test/run.js"
-  }
 }
