@@ -86,12 +86,14 @@
             var elementsToUpdate;
             var indexToUpdate;
             return {
-                attach:function (elements, index) {
-                    elementsToUpdate = elements;
-                    indexToUpdate = index;
-                    elements[index] = factory(initial)(result);
+                element: {
+                    attach:function (elements, index) {
+                        elementsToUpdate = elements;
+                        indexToUpdate = index;
+                        elements[index] = factory(initial)(result);
+                    }
                 },
-                __next: function(next) {
+                next: function(next) {
                     elementsToUpdate[indexToUpdate] = factory(next)(result);
                 }
             }
