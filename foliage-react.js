@@ -12,21 +12,24 @@
                 };
             },
             dynamic:function(elementFactory, initial) {
-                var component;
-                var result = react.createElement(react.createClass({
-                    getInitialState : function (){
-                        return initial;},
-                    render: function(){
-                        component = this;
-                        return elementFactory(this.state)(factory);
-                    }
-                }));
-                result.__proto__.__next = function(state){
-                    if(component){
-                        component.setState(state);
-                    }
-                };
-                return result;
+                return (function(){
+                    var component;
+                    var result = {}
+                    result.element = react.createElement(react.createClass({
+                        getInitialState : function (){
+                            return initial;},
+                        render: function(){
+                            component = this;
+                            return elementFactory(this.state)(factory);
+                        }
+                    }));
+                    result.next = function(state){
+                        if(component){
+                            component.setState(state);
+                        }
+                    };
+                    return result
+                })();
             }
         };
 
