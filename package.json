@@ -1,6 +1,6 @@
 {
     "name": "herb-foliage",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "A DSL to write HTML to a DOM",
     "main":"foliage.js",
     "author": {
