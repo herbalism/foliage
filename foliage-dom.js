@@ -1,6 +1,7 @@
 (function(){
     function foliageDom(_) {
         function trigger(node, event, payload){
+            var event = event.charAt(0).toUpperCase() + event.slice(1);
             var handler = node.attr['on'+event];
             handler && handler(payload);
         };
