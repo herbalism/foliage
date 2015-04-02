@@ -91,7 +91,11 @@
             "an attribute with a list value becomes a space separated list":elemTest(function(e){
                 var res=f.p({'class':['class1', 'class2']})(e);
                 return assert.equals(e.find(res, 'p').attr['class'], 'class1 class2');
-            })
+            }),
+	    "element can be found by id": elemTest(function(e) {
+		var res=f.div(f.p('#testId', "someValue"))(e);
+		return assert.equals(e.text(e.findById(res, '#testId')), "someValue");
+	    })
         });
     }
 

@@ -59,6 +59,26 @@
             return res[0];
         };
 
+	function findById(node, id) {
+            function idMatches(currentNode, id) {
+                return (node.attr &&
+                        node.attr.id &&
+                        node.attr.id === id.substring(1));
+            }
+	    
+            if (idMatches(node, id)) {
+                return node;
+            } else {
+                return _(node.children)
+                    .map(function (childNode) {
+                        return findById(childNode, id);
+                    })
+                    .find(function (matchingNode) {
+                        return true && matchingNode;
+                    });
+            }
+        }
+	
         function e(name) {
             return function(attr){
                 var children = _.toArray(arguments).slice(1);
@@ -77,6 +97,7 @@
         };
         var result = {
             find: find,
+	    findById: findById,
             text: text,
             trigger: trigger
         };
